@@ -7,5 +7,8 @@ export default mergeConfig<UserConfig, Partial<UserConfig>>(baseConfig, {
 		setupFiles: ['src/utils/test-utils/integration-test-setup.ts'],
 		minWorkers: 1,
 		maxWorkers: 1,
+		coverage: {
+			reporter: ['text', 'html', 'clover', 'json', 'lcov'],
+		},
 	},
 });

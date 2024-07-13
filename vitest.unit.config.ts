@@ -5,5 +5,9 @@ export default mergeConfig<UserConfig, UserConfig>(baseConfig, {
 	test: {
 		include: ['**/*.spec.ts', '!**/*.integration.spec.ts'],
 		globalSetup: ['src/utils/test-utils/unit-test-setup.ts'],
+		coverage: {
+			reporter: ['text', 'html', 'clover', 'json', 'lcov'],
+		},
 	},
+
 });

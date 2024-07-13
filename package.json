@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "cross-env CONFIG_PATH=\".env.dev\" pnpm drizzle:push && tsx watch src/main.ts",
     "test": "pnpm test:unit --run && pnpm test:integration --run",
-    "test:unit": "vitest -c vitest.unit.config.ts",
-    "test:integration": "cross-env CONFIG_PATH=\".env.test\" vitest -c vitest.integration.config.ts",
+    "test:unit": "vitest -c vitest.unit.config.ts --coverage run",
+    "test:integration": "cross-env CONFIG_PATH=\".env.test\" vitest -c vitest.integration.config.ts --coverage",
     "drizzle:push": "cross-env CONFIG_PATH=\".env.dev\" drizzle-kit push --config src/db/drizzle.config.ts",
-    "lint": "xo"
+    "lint": "xo",
+    "pretest": "pnpm run lint"
   },
   "type": "module",
   "keywords": [],

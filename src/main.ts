@@ -24,5 +24,5 @@ const main = async () => {
 	});
 };
 
-main(); // eslint-disable-line @typescript-eslint/no-floating-promises
+await main();
 

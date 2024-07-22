@@ -36,6 +36,26 @@ describe('MyController Integration Tests', () => {
 		await fastify.close();
 	});
 
+	it('should ship product when available', async () => {
+		const client = supertest(fastify.server);
+		const allProducts = [
+			{
+				leadTime: 10, available: 10, type: 'NORMAL', name: 'USB Dongle',
+			},
+		];
+		const orderId = await database.transaction(async tx => {
+			const productList = await tx.insert(products).values(allProducts).returning({productId: products.id});
+			const [order] = await tx.insert(orders).values([{}]).returning({orderId: orders.id});
+			await tx.insert(ordersToProducts).values(productList.map(p => ({orderId: order!.orderId, productId: p.productId})));
+			return order!.orderId;
+		});
+
+		await client.post(`/orders/${orderId}/processOrder`).expect(200).expect('Content-Type', /application\/json/);
+
+		const resultProduct = await database.query.products.findFirst({where: eq(products.name, 'USB Dongle')});
+		expect(resultProduct?.available).toBe(9);
+	});
+
 	it('should notify lead time when normal product is NOT available', async () => {
 		const client = supertest(fastify.server);
 		const allProducts = [

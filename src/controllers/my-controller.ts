@@ -6,6 +6,7 @@ import fastifyPlugin from 'fastify-plugin';
 import {serializerCompiler, validatorCompiler, type ZodTypeProvider} from 'fastify-type-provider-zod';
 import {z} from 'zod';
 import {orders, products} from '@/db/schema.js';
+import {ExpirableProduct, Product, SeasonalProduct} from "@/domain/product.js";
 
 export const myController = fastifyPlugin(async server => {
 	// Add schema validator and serializer
@@ -39,7 +40,9 @@ export const myController = fastifyPlugin(async server => {
 			for (const {product: p} of productList) {
 				switch (p.type) {
 					case 'NORMAL': {
-						if (p.available > 0) {
+						const product = new Product({quantity: p.available});
+
+						if (product.isAvailable()) {
 							p.available -= 1;
 							await dbse.update(products).set(p).where(eq(products.id, p.id));
 						} else {
@@ -54,7 +57,8 @@ export const myController = fastifyPlugin(async server => {
 
 					case 'SEASONAL': {
 						const currentDate = new Date();
-						if (currentDate > p.seasonStartDate! && currentDate < p.seasonEndDate! && p.available > 0) {
+						const product = new SeasonalProduct({quantity: p.available, startDate: p.seasonStartDate!, endDate: p.seasonEndDate!});
+						if (product.isOnSeason(currentDate) && product.isAvailable()) {
 							p.available -= 1;
 							await dbse.update(products).set(p).where(eq(products.id, p.id));
 						} else {
@@ -66,7 +70,9 @@ export const myController = fastifyPlugin(async server => {
 
 					case 'EXPIRABLE': {
 						const currentDate = new Date();
-						if (p.available > 0 && p.expiryDate! > currentDate) {
+						const product = new ExpirableProduct({quantity: p.available, expiryDate: p.expiryDate!});
+
+						if (product.isAvailable() && !product.isExpired(currentDate)) {
 							p.available -= 1;
 							await dbse.update(products).set(p).where(eq(products.id, p.id));
 						} else {

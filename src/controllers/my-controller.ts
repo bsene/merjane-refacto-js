@@ -6,7 +6,7 @@ import fastifyPlugin from 'fastify-plugin';
 import {serializerCompiler, validatorCompiler, type ZodTypeProvider} from 'fastify-type-provider-zod';
 import {z} from 'zod';
 import {orders, products} from '@/db/schema.js';
-import {ExpirableProduct, Product, SeasonalProduct} from "@/domain/product.js";
+import {ExpirableProduct, Product, SeasonalProduct} from '@/domain/product.js';
 
 export const myController = fastifyPlugin(async server => {
 	// Add schema validator and serializer

@@ -3,14 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "exports": "./main.js",
+  "imports": {
+    "#@/services/*.js": "./services/*.js"
+  },
   "scripts": {
+    "prebuild": "pnpm run lint && tsc --noEmit",
+    "build": "tsc",
     "dev": "cross-env CONFIG_PATH=\".env.dev\" pnpm drizzle:push && tsx watch src/main.ts",
     "test": "pnpm test:unit --run && pnpm test:integration --run",
     "test:unit": "vitest -c vitest.unit.config.ts --coverage run",
     "test:integration": "cross-env CONFIG_PATH=\".env.test\" vitest -c vitest.integration.config.ts --coverage",
     "drizzle:push": "cross-env CONFIG_PATH=\".env.dev\" drizzle-kit push --config src/db/drizzle.config.ts",
     "lint": "xo",
-    "pretest": "pnpm run lint"
+    "pretest": "pnpm run lint",
+    "fix": "xo --fix",
+    "start": "cross-env CONFIG_PATH=\".env.dev\" pnpm drizzle:push && tsx src/main.ts"
   },
   "type": "module",
   "keywords": [],
@@ -69,5 +76,5 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@9.1.4+sha256.30a1801ac4e723779efed13a21f4c39f9eb6c9fbb4ced101bce06b422593d7c9"
+  "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf"
 }

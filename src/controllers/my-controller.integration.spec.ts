@@ -82,7 +82,7 @@ describe('MyController Integration Tests', () => {
 		const allProducts = [
 			{
 				leadTime: 15, available: 0, type: 'SEASONAL', name: 'Watermelon', seasonStartDate: new Date(Date.now() - (2 * d)), seasonEndDate: new Date(Date.now() + (58 * d)),
-			}
+			},
 		];
 		const orderId = await database.transaction(async tx => {
 			const productList = await tx.insert(products).values(allProducts).returning({productId: products.id});
@@ -103,7 +103,7 @@ describe('MyController Integration Tests', () => {
 		const allProducts = [
 			{
 				leadTime: 13, available: 0, type: 'SEASONAL', name: 'Grapes', seasonStartDate: new Date(Date.now() + (180 * d)), seasonEndDate: new Date(Date.now() + (240 * d)),
-			}
+			},
 		];
 		const orderId = await database.transaction(async tx => {
 			const productList = await tx.insert(products).values(allProducts).returning({productId: products.id});
@@ -124,7 +124,7 @@ describe('MyController Integration Tests', () => {
 		const allProducts = [
 			{
 				leadTime: 90, available: 9, type: 'EXPIRABLE', name: 'Milk', expiryDate: new Date(Date.now() - (2 * d)),
-			}
+			},
 		];
 		const orderId = await database.transaction(async tx => {
 			const productList = await tx.insert(products).values(allProducts).returning({productId: products.id});

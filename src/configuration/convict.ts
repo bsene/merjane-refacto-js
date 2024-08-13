@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 
 convict.addFormats(convict_format_with_validator);
 
-const dotenvPath = process.env['CONFIG_PATH']
-	? path.resolve(process.cwd(), process.env['CONFIG_PATH'])
+const dotenvPath = process.env.CONFIG_PATH
+	? path.resolve(process.cwd(), process.env.CONFIG_PATH)
 	: undefined;
 
 if (dotenvPath) {
